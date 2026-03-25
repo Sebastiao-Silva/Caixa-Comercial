@@ -66,7 +66,7 @@ def main(page: ft.Page):
         return conn
 
     # --- RESTAURAÇÃO E EXPORTAÇÃO ---
-    def ao_selecionar_arquivo(e: ft.FilePickerResultEvent):
+    def ao_selecionar_arquivo(e):
         if e.files:
             caminho_selecionado = e.files[0].path
             caminho_atual = get_db_path()
@@ -90,7 +90,9 @@ def main(page: ft.Page):
                 processar_substituicao
             )
 
-    picker_restaurar = ft.FilePicker(on_result=ao_selecionar_arquivo)
+    # CORREÇÃO AQUI: Criamos o picker e atribuímos o evento separadamente para evitar erro de __init__
+    picker_restaurar = ft.FilePicker()
+    picker_restaurar.on_result = ao_selecionar_arquivo
     page.overlay.append(picker_restaurar)
 
     def exportar_excel(e):
