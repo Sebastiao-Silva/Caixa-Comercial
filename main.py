@@ -66,7 +66,6 @@ def main(page: ft.Page):
         return conn
 
     # --- RESTAURAÇÃO E EXPORTAÇÃO ---
-    # CORREÇÃO AQUI: Usando ft.FilePickerResultEvent se disponível ou o caminho direto do evento
     def ao_selecionar_arquivo(e: ft.FilePickerResultEvent):
         if e.files:
             caminho_selecionado = e.files[0].path
