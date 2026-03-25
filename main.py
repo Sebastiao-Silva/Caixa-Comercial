@@ -66,6 +66,7 @@ def main(page: ft.Page):
         return conn
 
     # --- RESTAURAÇÃO E EXPORTAÇÃO ---
+    # CORREÇÃO AQUI: Usando ft.FilePickerResultEvent se disponível ou o caminho direto do evento
     def ao_selecionar_arquivo(e: ft.FilePickerResultEvent):
         if e.files:
             caminho_selecionado = e.files[0].path
@@ -299,7 +300,6 @@ def main(page: ft.Page):
         itens_txt = ""
         try:
             conn = get_db()
-            # Buscamos o histórico completo (baixadas e não baixadas) para conferência
             vendas = conn.execute("""SELECT id, descricao_resumo, total, data_ms, baixada 
                                      FROM vendas WHERE cliente_nome = ? 
                                      ORDER BY data_ms DESC""", (nome_cliente,)).fetchall()
@@ -309,8 +309,6 @@ def main(page: ft.Page):
             else:
                 for v in vendas:
                     id_v, item_desc, item_valor, ms, baixada = v[0], str(v[1]), float(v[2]), v[3], v[4]
-                    
-                    # Formatação da data e hora
                     dt = datetime.fromtimestamp(ms / 1000.0)
                     data_formatada = dt.strftime("%d/%m %H:%M")
                     
